@@ -1,5 +1,7 @@
 package org.hp.samples;
 
+import org.hp.samples.Model.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,9 @@ public class AddUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user=new User();
+        user.Name=request.getParameter("Name");
+
         response.setContentType("text/plain");
         response.setStatus(200);
         PrintWriter writer = response.getWriter();
