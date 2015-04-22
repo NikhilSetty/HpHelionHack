@@ -21,8 +21,9 @@ public class DbTest extends HttpServlet{
                          HttpServletResponse response) throws ServletException, IOException {
         // JDBC driver name and database URL
         final String JDBC_DRIVER="com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        final String DB_URL="jdbc:microsoft:sqlserver://tddowsht2o.database.windows.net";
+        final String DB_URL="jdbc:sqlserver://tddowsht2o.database.windows.net;databaseName=Teach-Mate-DB";
 
+        //jdbc:microsoft:sqlserver://
         //  Database credentials
         final String USER = "anuj";
         final String PASS = "P@ssw0rd123";
@@ -42,7 +43,7 @@ public class DbTest extends HttpServlet{
 
             // Execute SQL query
             String sql;
-            sql = "SELECT username from users";
+            sql = "select username from Users";
             ResultSet rs = stmt.executeQuery(sql);
 
             // Extract data from result set
@@ -62,11 +63,11 @@ public class DbTest extends HttpServlet{
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
-            out.println(se.getMessage());
+            out.println(se);
         }catch(Exception e){
             //Handle errors for Class.forName
             e.printStackTrace();
-            out.println(e.getMessage());
+            out.println(e);
         }finally{
             //finally block used to close resources
             try{
