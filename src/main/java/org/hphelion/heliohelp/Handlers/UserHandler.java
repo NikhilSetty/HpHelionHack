@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Created by NJere on 4/23/2015.
@@ -105,5 +106,60 @@ public class UserHandler implements IUserHandler {
         } //end try
         return 0;
     }
+
+    public int UpdateUserReg(int userId,String regId) throws SQLException {
+        Connection conn=null;
+        Statement statement=null;
+        ResultSet rs=null;
+        User user=new User();
+        try {
+            conn = dbTest.getConnection();
+            statement = conn.createStatement();
+            String sql = "UPDATE Users SET RegistrationId="+regId+"where Id="+userId;
+            rs = statement.executeQuery(sql);
+            rs.close();
+            statement.close();
+            conn.close();
+            return 1;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        rs.close();
+        statement.close();
+        conn.close();
+        return 0;
+    }
+
+    public User getUser(int userId)
+    {
+        Connection conn=null;
+        Statement statement=null;
+        ResultSet rs=null;
+        User user=new User();
+        try {
+            conn = dbTest.getConnection();
+            statement = conn.createStatement();
+            String sql = "SELECT * FROM Users where Id="+userId;
+            rs = statement.executeQuery(sql);
+            if(rs.next()) {
+                user.Id=rs.getInt("Id");
+                user.Address1=rs.getString("Address");
+                user.EmailId=rs.getString("Email");
+                user.Latitude1=rs.getFloat("Latitude");
+                user.Longitude1=rs.getFloat("Longitude");
+                user.Password=rs.getString("Password");
+                user.UserName=rs.getString("Name");
+                user.Pincode1=rs.getString("Pinocde");
+                user.RegistrationId=rs.getString("RegistrationId");
+                return user;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

@@ -42,7 +42,6 @@ public class RequestHandler implements IRequestHandler{
                     return rs.getInt("Id");
                 }
             }
-
         }
         catch (SQLException ex)
         {
@@ -77,8 +76,6 @@ public class RequestHandler implements IRequestHandler{
                 req.CurrentLatitude=rs.getFloat("CurrentLatitude");
                 req.IsCurrent=rs.getBoolean("IsCurrent");
             }
-
-
         }
         catch (SQLException ex)
         {
@@ -91,6 +88,35 @@ public class RequestHandler implements IRequestHandler{
             conn.close();
         }
 
+    }
+
+    public Request RetrieveRequest(int requestId)
+    {
+
+        Connection conn=null;
+        Statement statement=null;
+        ResultSet rs=null;
+        Request req=new Request();
+        try {
+            conn = dbTest.getConnection();
+            statement = conn.createStatement();
+            String sql = "SELECT * FROM Requests WHERE Id="+requestId;
+            rs = statement.executeQuery(sql);
+            if(rs.next())
+            {
+                req.Id=rs.getInt("Id");
+                req.UserId=rs.getInt("UserId");
+                req.RequestMessage=rs.getString("RequestMessage");
+                req.CurrentLongitude=rs.getFloat("CurrentLongitude");
+                req.CurrentLatitude=rs.getFloat("CurrentLatitude");
+                req.IsCurrent=rs.getBoolean("IsCurrent");
+            }
+            return req;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

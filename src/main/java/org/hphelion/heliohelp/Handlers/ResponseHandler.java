@@ -40,7 +40,7 @@ public class ResponseHandler implements IResponseHandler {
         return 1;
     }
 
-    public List<Response> RetrieveResponse(Request request){
+    public List<Response> RetrieveResponse(int requestId){
         Connection conn=null;
         Statement statement=null;
         ResultSet rs=null;
@@ -49,7 +49,7 @@ public class ResponseHandler implements IResponseHandler {
         try {
             conn = dbTest.getConnection();
             statement = conn.createStatement();
-            String sql="Select * from Response where RequestId="+request.Id;
+            String sql="Select * from Response where RequestId="+requestId;
             rs = statement.executeQuery(sql);
             while(rs.next())
             {
@@ -67,5 +67,4 @@ public class ResponseHandler implements IResponseHandler {
         }
         return null;
     }
-
 }
