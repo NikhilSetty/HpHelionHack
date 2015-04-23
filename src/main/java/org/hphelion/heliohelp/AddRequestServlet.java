@@ -3,7 +3,9 @@ package org.hphelion.heliohelp;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.hphelion.heliohelp.Handlers.RequestHandler;
 import org.hphelion.heliohelp.Handlers.UserHandler;
+import org.hphelion.heliohelp.Interfaces.IRequestHandler;
 import org.hphelion.heliohelp.Interfaces.IUserHandler;
 import org.hphelion.heliohelp.Model.Request;
 import org.hphelion.heliohelp.Model.User;
@@ -28,10 +30,13 @@ public class AddRequestServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     IUserHandler userHandler= new UserHandler();
+    IRequestHandler requestHandler = new RequestHandler();
+    GCM gcm=new GCM();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuffer jb = new StringBuffer();
         String line = null;
         JSONObject jsonObject=null;
+        PrintWriter writer =response.getWriter();
         try {
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null)
@@ -62,7 +67,7 @@ public class AddRequestServlet extends HttpServlet {
         e.printStackTrace();
     }
     // System.out.println(employee);
-        List<Integer> userIds=null;
+        List<User> userIds=null;
         //If isCurrent, get Users to assign the request to based on Lat and Long given in the request object
         //Else, retrieve the registered location of the User who generated the request and get the Users to assign.
         if(req.IsCurrent)
@@ -73,18 +78,64 @@ public class AddRequestServlet extends HttpServlet {
             //User user= userHandler.getUser(req.UserId);
             // userIds=userHandler.getUsers(user.Latitude, user.Longitude);
         }
-
+        StringBuffer sb = new StringBuffer();
         //Set AssignedUsers property to the CSV of Assigned Users IDs
-        for(Iterator<Integer> i = userIds.iterator(); i.hasNext(); ) {
-            int item = i.next();
+        for(Iterator<User> i = userIds.iterator(); i.hasNext(); ) {
+            int item = i.next().Id;
+            if(i.hasNext())
+            sb.append(""+item+",");
+            else
+                sb.append(""+item);
 
         }
-
+        String users=sb.toString();
+        req.AssignedUsers=users;
         //Add Request record in the database
-        //!Send Push Notification to all these Users.
+        int reqId=requestHandler.AddRequest(req);
+        if(reqId>0){
+            //!Send Push Notification to all these Users.
+            String value = "{\"data\": {\"message\":" + '"' + req.RequestMessage + '"' + ",\"userName\":" + '"' +
+                    requestModel.UserName + '"' + ",\"requestId\":" + requestModel.Id + ",\"Type\":"  + RequestType +
+                    "},\"registration_ids\":[";
 
-        //Update the RequestsAssigned field for all users to whom this request has been assigned and Update the Database.
 
+            for(Iterator<User> i = userIds.iterator(); i.hasNext(); ) {
+                User item = i.next();
+                if(i.hasNext())
+                    value += "\"" + item.RegistrationId + "\",";
+                else
+                    value += "\"" + item.RegistrationId + "\",";
+
+            }
+
+            value +="]}";
+            boolean successful= gcm.SendGCM(value);
+
+            //Update the RequestsAssigned field for all users to whom this request has been assigned and Update the Database.
+            StringBuffer sb1 = new StringBuffer();
+            for(Iterator<User> i = userIds.iterator(); i.hasNext(); ) {
+                User item = i.next();
+                sb1.append(item.RequestsAssigned);
+                if(item.RequestsAssigned==null)
+                {
+                    sb1.append(""+reqId);
+                    String reqAssigned=sb1.toString();
+                    item.RequestsAssigned=reqAssigned;
+                    userHandler.UpdateUser(item);
+                }
+                else{
+                    sb1.append(item.RequestsAssigned);
+                    sb1.append(","+reqId);
+                    String reqAssigned=sb1.toString();
+                    item.RequestsAssigned=reqAssigned;
+                    userHandler.UpdateUser(item);
+                }
+
+
+            }
+
+        }
+        writer.print(""+reqId);
         //Return Request id
     }
 }

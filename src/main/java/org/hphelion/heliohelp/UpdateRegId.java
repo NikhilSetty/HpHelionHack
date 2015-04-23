@@ -5,7 +5,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hphelion.heliohelp.Handlers.UserHandler;
 import org.hphelion.heliohelp.Interfaces.IUserHandler;
-import org.hphelion.heliohelp.Model.Request;
 import org.hphelion.heliohelp.Model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,24 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.text.ParseException;
 
 /**
- * Created by NiRavishankar on 4/22/2015.
+ * Created by NJere on 4/23/2015.
  */
-public class AddUserServlet extends HttpServlet {
-
-    private static final long serialVersionUID = 1L;
-
-    /*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/plain");
-        response.setStatus(200);
-        PrintWriter writer = response.getWriter();
-        writer.println("I am adding user");
-        writer.close();
-    }*/
-    IUserHandler userHandler= new UserHandler();
+public class UpdateRegId extends HttpServlet {
+    IUserHandler userHandler = new UserHandler();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuffer jb = new StringBuffer();
         String line = null;
@@ -48,7 +35,7 @@ public class AddUserServlet extends HttpServlet {
         } catch (Exception e) { /*report an error*/ }
 
         try {
-             jsonObject = new JSONObject(jb.toString());
+            jsonObject = new JSONObject(jb.toString());
 
         } catch (JSONException e) {
             // crash and burn
@@ -76,20 +63,16 @@ public class AddUserServlet extends HttpServlet {
         //System.out.println(employee);
 
         //Check if User Already exists in Database using email id.
-        boolean emailExists=userHandler.EmailAlreadyExists(user.EmailId);
-        if(!emailExists)
-        {
+       // boolean emailExists=userHandler.EmailAlreadyExists(user.EmailId);
+       // if(!emailExists)
+      //  {
             //Add User if it does not exist
-            userId =userHandler.AddUser(user);
-        }
+            userId =userHandler.UpdateUserReg(user.Id, user.RegistrationId);
+        //}
 
-        else{
 
-            writer.print("ERROR-Email Exists");
-        }
-
-            writer.print(""+userId);
-            //writer.print("INSERT INTO Users VALUES ("+user.UserName+","+user.EmailId+","+user.Password+","+user.Pincode1+","+user.Address1+","+user.Latitude1+","  +  user.Longitude1+")");
+        writer.print(""+userId);
+        //writer.print("INSERT INTO Users VALUES ("+user.UserName+","+user.EmailId+","+user.Password+","+user.Pincode1+","+user.Address1+","+user.Latitude1+","  +  user.Longitude1+")");
         //Return ID (existing or new
     }
 }

@@ -12,5 +12,6 @@ public class User {
   public  String Address1;
   public  Float Latitude1;
   public  Float Longitude1;
-  public  String RegistrationId;
+    public String RequestsAssigned;
+    public String RegistrationId;
 }

@@ -22,7 +22,7 @@ public class RequestHandler implements IRequestHandler{
         dbTest = new DbAccess();
     }
 
-    public int AddRequest(Request request) throws SQLException {
+    public int AddRequest(Request request) {
         Connection conn=null;
         Statement statement=null;
         ResultSet rs=null;
@@ -39,8 +39,14 @@ public class RequestHandler implements IRequestHandler{
                 rs=statement.executeQuery(sql2);
                 if(rs.next())
                 {
+                    rs.close();
+                    statement.close();
+                    conn.close();
                     return rs.getInt("Id");
                 }
+                rs.close();
+                statement.close();
+                conn.close();
             }
         }
         catch (SQLException ex)
@@ -48,11 +54,7 @@ public class RequestHandler implements IRequestHandler{
             ex.printStackTrace();
             return 0;
         }
-        finally {
-            rs.close();
-            statement.close();
-            conn.close();
-        }
+
         return 0;
     }
 

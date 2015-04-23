@@ -37,23 +37,6 @@ public class DbAccess implements IDbAccess {
             e.printStackTrace();
             //out.println(e);
             return null;
-        }finally{
-            //finally block used to close resources
-            try{
-                if(stmt!=null)
-                    stmt.close();
-
-            }catch(SQLException se2){
-                return null;
-            }// nothing we can do
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-                return null;
-              //  out.println(se.getMessage());
-            }//end finally try
         }
         return conn;
     }

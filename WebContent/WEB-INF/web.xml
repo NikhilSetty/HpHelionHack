@@ -40,6 +40,11 @@
         <servlet-class>org.hphelion.heliohelp.RetrieveResponseServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>UpdateRegId</servlet-name>
+        <servlet-class>org.hphelion.heliohelp.UpdateRegId</servlet-class>
+    </servlet>
+
 	<servlet-mapping>
 		<servlet-name>HelloServlet</servlet-name>
 		<url-pattern>/jere</url-pattern>
@@ -73,6 +78,11 @@
     <servlet-mapping>
         <servlet-name>DbTest</servlet-name>
         <url-pattern>/db</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UpdateRegId</servlet-name>
+        <url-pattern>/updateregid</url-pattern>
     </servlet-mapping>
 
 </web-app>

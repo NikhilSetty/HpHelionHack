@@ -14,6 +14,8 @@ public interface IUserHandler {
     //void UpdateUser(User user);
     //int CheckUser(String email, String password);
     boolean EmailAlreadyExists(String email);
+    User getUser(int userId);
+    int UpdateUserReg(int userId,String regId);
     //List<Request> RetrieveRequestsGeneratedByAUser(int id);
     //User RetrieveUser(int id);
     //List<User> RetrieveUsersForARequest(Request request);

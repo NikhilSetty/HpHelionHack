@@ -29,28 +29,30 @@ public class UserHandler implements IUserHandler {
         try{
             conn = dbTest.getConnection();
             statement=conn.createStatement();
-            String sql="SELECT * FROM Users WHERE Email="+email;
+            String sql="SELECT * FROM Users WHERE Email='"+email+"'";
             rs = statement.executeQuery(sql);
 
-                if(rs.next())
-                {
+            if (rs.wasNull()) {
+
                     rs.close();
                     statement.close();
                     conn.close();
                     return true;
-                }
+
+            }
             rs.close();
             statement.close();
             conn.close();
-            return false;
+
 
         }
         catch (SQLException ex)
         {
             ex.printStackTrace();
+            return true;
 
         }
-        return true;
+        return false;
     }
 
     public int AddUser(User user)
@@ -62,20 +64,18 @@ public class UserHandler implements IUserHandler {
         try{
             conn = dbTest.getConnection();
             statement=conn.createStatement();
-            String sql="INSERT INTO Users VALUES ("+user.UserName+","+user.EmailId+","+user.Password+","+user.Pincode1+","+user.Address1+","+user.Latitude1+"," +
-                    user.Longitude1+")";
-            rs = statement.executeQuery(sql);
-            boolean isInserted=rs.rowInserted();
-            if(isInserted)
-            {
-                String sql2="Select Id from Users orderby Id desc";
+            String sql="INSERT INTO Users VALUES ('"+user.UserName+"','"+user.EmailId+"','"+user.Password+"','"+user.Pincode1+"','"+user.Address1+"',"+user.Latitude1+"," +
+                    user.Longitude1+",null)";
+            statement.executeUpdate(sql);
+
+            String sql2="Select Id from Users order by Id desc";
                 rs=statement.executeQuery(sql2);
                 if(rs.next())
                 {
                     int id = rs.getInt("Id");
                     return id;
                 }
-            }
+
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -107,7 +107,7 @@ public class UserHandler implements IUserHandler {
         return 0;
     }
 
-    public int UpdateUserReg(int userId,String regId) throws SQLException {
+    public int UpdateUserReg(int userId,String regId) {
         Connection conn=null;
         Statement statement=null;
         ResultSet rs=null;
@@ -125,9 +125,14 @@ public class UserHandler implements IUserHandler {
         catch (Exception e){
             e.printStackTrace();
         }
-        rs.close();
-        statement.close();
-        conn.close();
+        try {
+            rs.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return 0;
     }
 
