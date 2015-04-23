@@ -6,6 +6,7 @@ package org.hphelion.heliohelp.Model;
 public class Response {
     public int Id;
     public String Message;
+    public String TimeGenerated;
     public int RequestId;
     public int UserId;
 }

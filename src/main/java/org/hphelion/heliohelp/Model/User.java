@@ -5,11 +5,11 @@ package org.hphelion.heliohelp.Model;
  */
 public class User {
   public int Id;
-  public String Name;
-  public  String Email;
+  public String UserName;
+  public  String EmailId;
   public  String Password;
-  public  String Pincode;
-  public  String Address;
-  public  Float Latitude;
-  public  Float Longitude;
+  public  String Pincode1;
+  public  String Address1;
+  public  Float Latitude1;
+  public  Float Longitude1;
 }

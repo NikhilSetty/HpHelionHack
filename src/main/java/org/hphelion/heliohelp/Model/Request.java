@@ -11,4 +11,5 @@ public class Request {
     public Float CurrentLongitude;
     public int UserId;
     public String AssignedUsers;
+    public String TimeGenerated;
 }

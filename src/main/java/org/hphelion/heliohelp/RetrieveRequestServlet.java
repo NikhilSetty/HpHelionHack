@@ -23,6 +23,7 @@ public class RetrieveRequestServlet extends HttpServlet {
         //Read the UserId param from Query String.
 
         //Iterate over AssignedRequests and get each request from Database.
+
         //Append to the JSON Object.
 
         //Return the JSON Object.

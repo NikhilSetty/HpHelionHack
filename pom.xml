@@ -19,6 +19,12 @@
       </plugin>
     </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>codehaus</id>
+            <url>http://repository.codehaus.org/org/codehaus</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -36,5 +42,12 @@
             <artifactId>json</artifactId>
             <version>20090211</version>
         </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>1.9.13</version>
+            </dependency>
+
     </dependencies>
 </project>
