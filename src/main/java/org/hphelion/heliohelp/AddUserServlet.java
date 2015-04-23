@@ -16,7 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -27,6 +30,8 @@ public class AddUserServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String STORE_NAME = "HelioHelp";
+    private static final String API_KEY= "01bf3098-7549-46ad-8864-322226763658";
     /*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setStatus(200);
@@ -81,6 +86,12 @@ public class AddUserServlet extends HttpServlet {
         {
             //Add User if it does not exist
             userId =userHandler.AddUser(user);
+            try{
+                AddUserToStore(user);
+            }catch (Exception e){
+
+            }
+
         }
 
         else{
@@ -91,5 +102,34 @@ public class AddUserServlet extends HttpServlet {
             writer.print(""+userId);
             //writer.print("INSERT INTO Users VALUES ("+user.UserName+","+user.EmailId+","+user.Password+","+user.Pincode1+","+user.Address1+","+user.Latitude1+","  +  user.Longitude1+")");
         //Return ID (existing or new
+    }
+
+    private boolean AddUserToStore(User user) throws Exception {
+
+        String url = "https://api.idolondemand.com/1/api/sync/adduser/v1?store="+STORE_NAME+"&email="+user.EmailId+"&password="+user.Password+"&apikey="+API_KEY;
+
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        int responseCode = con.getResponseCode();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }try{
+            JSONObject jsonObject = new JSONObject(response);
+            boolean success = jsonObject.getBoolean("success");
+            return success;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 }

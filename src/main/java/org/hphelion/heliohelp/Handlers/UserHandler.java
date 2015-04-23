@@ -154,6 +154,49 @@ public class UserHandler implements IUserHandler {
         return 0;
     }
 
+    public int GetUserId(String emailId, String password) {
+        Connection conn=null;
+        Statement statement=null;
+        ResultSet rs=null;
+        try{
+            conn = dbTest.getConnection();
+            statement=conn.createStatement();
+            String sql="SELECT * FROM Users WHERE Email="+emailId+" AND Password ="+password;
+            rs = statement.executeQuery(sql);
+
+            if(rs.first())
+            {
+                return rs.getInt("Id");
+            }
+            return 0;
+
+        }
+        catch (SQLException ex)
+        {
+            ex.printStackTrace();
+
+        }
+        finally{
+            //finally block used to close resources
+            try{
+                if(rs!=null)
+                    rs.close();
+            }catch(SQLException se2){
+            }
+            try{
+                if(statement!=null)
+                    statement.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+            }//end finally try
+        } //end try
+        return 0;
+    }
+
     public User getUser(int userId) {
         Connection conn=null;
         Statement statement=null;
