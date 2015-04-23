@@ -1,4 +1,4 @@
-package org.hp.samples;
+package org.hphelion.heliohelp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,14 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.text.ParseException;
 
 /**
- * Created by NiRavishankar on 4/22/2015.
+ * Created by PGonagur on 4/22/2015.
  */
-public class AddUserServlet extends HttpServlet {
+public class AddResponseServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,10 +41,17 @@ public class AddUserServlet extends HttpServlet {
             // crash and burn
             throw new IOException("Error parsing JSON request string");
         }
-        /*response.setContentType("text/plain");
-        response.setStatus(200);
-        PrintWriter writer = response.getWriter();
-        writer.println("I am adding user");
-        writer.close();*/
+
+        //Map the JSON Object to Response Object.
+
+        //Add Response Object to the Database.
+
+        //Retrieve the Request Object from database.
+
+        //Retrieve the User Object of User who generated the Request.
+
+        //!Send Push Notification to the User.
+
+        //Return Response id
     }
 }

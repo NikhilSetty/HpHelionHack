@@ -1,4 +1,4 @@
-package org.hp.samples;
+package org.hphelion.heliohelp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 
@@ -20,13 +19,13 @@ public class AddUserServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setStatus(200);
         PrintWriter writer = response.getWriter();
         writer.println("I am adding user");
         writer.close();
-    }
+    }*/
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuffer jb = new StringBuffer();
@@ -43,10 +42,13 @@ public class AddUserServlet extends HttpServlet {
             // crash and burn
             throw new IOException("Error parsing JSON request string");
         }
-        /*response.setContentType("text/plain");
-        response.setStatus(200);
-        PrintWriter writer = response.getWriter();
-        writer.println("I am adding user");
-        writer.close();*/
+
+        //Map the JSON Object to User Object.
+
+        //Check if User Already exists in Database using email id.
+
+            //Add User if it does not exist
+
+        //Return ID (existing or new
     }
 }

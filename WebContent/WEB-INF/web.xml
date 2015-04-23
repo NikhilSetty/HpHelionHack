@@ -12,7 +12,7 @@
 
     <servlet>
         <servlet-name>AddUser</servlet-name>
-        <servlet-class>org.hp.samples.AddUserServlet</servlet-class>
+        <servlet-class>org.hphelion.heliohelp.AddUserServlet</servlet-class>
     </servlet>
 
     <servlet>
@@ -20,21 +20,59 @@
         <servlet-class>org.hp.samples.DbTest</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>AddRequest</servlet-name>
+        <servlet-class>org.hphelion.heliohelp.AddRequestServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddResponse</servlet-name>
+        <servlet-class>org.hphelion.heliohelp.AddResponseServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>RetrieveRequest</servlet-name>
+        <servlet-class>org.hphelion.heliohelp.RetrieveRequestServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>RetrieveResponse</servlet-name>
+        <servlet-class>org.hphelion.heliohelp.RetrieveResponseServlet</servlet-class>
+    </servlet>
+
 	<servlet-mapping>
 		<servlet-name>HelloServlet</servlet-name>
 		<url-pattern>/jere</url-pattern>
 	</servlet-mapping>
 
-
     <servlet-mapping>
         <servlet-name>AddUser</servlet-name>
-        <url-pattern>/adduser</url-pattern>
+        <url-pattern>/AddUser</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AddRequest</servlet-name>
+        <url-pattern>/AddRequest</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AddResponse</servlet-name>
+        <url-pattern>/AddResponse</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RetrieveRequest</servlet-name>
+        <url-pattern>/GetRequest</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RetrieveResponse</servlet-name>
+        <url-pattern>/GetResponse</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>DbTest</servlet-name>
         <url-pattern>/db</url-pattern>
     </servlet-mapping>
-
 
 </web-app>
