@@ -1,4 +1,4 @@
-package org.hp.samples.Model;
+package org.hphelion.heliohelp.Model;
 
 /**
  * Created by AnSingh on 4/22/2015.
