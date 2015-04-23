@@ -94,7 +94,7 @@ public class AddRequestServlet extends HttpServlet {
         int reqId=requestHandler.AddRequest(req);
         if(reqId>0){
             //!Send Push Notification to all these Users.
-            String value = "{\"data\": {\"message\":" + '"' + req.RequestMessage + '"' + ",\"userName\":" + '"' +
+            /*String value = "{\"data\": {\"message\":" + '"' + req.RequestMessage + '"' + ",\"userName\":" + '"' +
                     requestModel.UserName + '"' + ",\"requestId\":" + requestModel.Id + ",\"Type\":"  + RequestType +
                     "},\"registration_ids\":[";
 
@@ -132,7 +132,7 @@ public class AddRequestServlet extends HttpServlet {
                 }
 
 
-            }
+            }*/
 
         }
         writer.print(""+reqId);

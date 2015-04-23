@@ -36,7 +36,24 @@ public class ResponseHandler implements IResponseHandler {
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
-        }
+        } finally{
+            //finally block used to close resources
+            try{
+                if(rs!=null)
+                    rs.close();
+            }catch(SQLException se2){
+            }
+            try{
+                if(statement!=null)
+                    statement.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+            }//end finally try
+        } //end try
         return 1;
     }
 
@@ -44,7 +61,6 @@ public class ResponseHandler implements IResponseHandler {
         Connection conn=null;
         Statement statement=null;
         ResultSet rs=null;
-        Response response=new Response();
         List<Response> responses=new ArrayList<Response>();
         try {
             conn = dbTest.getConnection();
@@ -53,6 +69,7 @@ public class ResponseHandler implements IResponseHandler {
             rs = statement.executeQuery(sql);
             while(rs.next())
             {
+                Response response=new Response();
                 response.Id = rs.getInt("Id");
                 response.Message=rs.getString("ResponseMessage");
                 response.RequestId=rs.getInt("RequestId");
@@ -64,7 +81,24 @@ public class ResponseHandler implements IResponseHandler {
         }
         catch (Exception e){
             e.printStackTrace();
-        }
+        } finally{
+            //finally block used to close resources
+            try{
+                if(rs!=null)
+                    rs.close();
+            }catch(SQLException se2){
+            }
+            try{
+                if(statement!=null)
+                    statement.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+            }//end finally try
+        } //end try
         return null;
     }
 }

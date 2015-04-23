@@ -35,18 +35,12 @@ public class RequestHandler implements IRequestHandler{
             boolean isInserted=rs.rowInserted();
             if(isInserted)
             {
-                String sql2="Select * from Requests orderby Id";
+                String sql2="Select * from Requests orderby Id desc";
                 rs=statement.executeQuery(sql2);
-                if(rs.next())
+                if(rs.first())
                 {
-                    rs.close();
-                    statement.close();
-                    conn.close();
                     return rs.getInt("Id");
                 }
-                rs.close();
-                statement.close();
-                conn.close();
             }
         }
         catch (SQLException ex)
@@ -54,7 +48,24 @@ public class RequestHandler implements IRequestHandler{
             ex.printStackTrace();
             return 0;
         }
-
+        finally{
+            //finally block used to close resources
+            try{
+                if(rs!=null)
+                    rs.close();
+            }catch(SQLException se2){
+            }
+            try{
+                if(statement!=null)
+                    statement.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+            }//end finally try
+        } //end try
         return 0;
     }
 
@@ -84,11 +95,24 @@ public class RequestHandler implements IRequestHandler{
             ex.printStackTrace();
 
         }
-        finally {
-            rs.close();
-            statement.close();
-            conn.close();
-        }
+        finally{
+            //finally block used to close resources
+            try{
+                if(rs!=null)
+                    rs.close();
+            }catch(SQLException se2){
+            }
+            try{
+                if(statement!=null)
+                    statement.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+            }//end finally try
+        } //end try
 
     }
 
@@ -118,6 +142,24 @@ public class RequestHandler implements IRequestHandler{
         catch(Exception e){
             e.printStackTrace();
         }
+        finally{
+            //finally block used to close resources
+            try{
+                if(rs!=null)
+                    rs.close();
+            }catch(SQLException se2){
+            }
+            try{
+                if(statement!=null)
+                    statement.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+            }//end finally try
+        } //end try
         return null;
     }
 
