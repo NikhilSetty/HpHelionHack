@@ -32,6 +32,7 @@ public class AddRequestServlet extends HttpServlet {
     IUserHandler userHandler= new UserHandler();
     IRequestHandler requestHandler = new RequestHandler();
     GCM gcm=new GCM();
+    int RequestType=3;
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuffer jb = new StringBuffer();
         String line = null;
@@ -72,11 +73,11 @@ public class AddRequestServlet extends HttpServlet {
         //Else, retrieve the registered location of the User who generated the request and get the Users to assign.
         if(req.IsCurrent)
         {
-            //userIds=userHandler.getUsers(req.CurrentLatitude, req.CurrentLongitude);
+            userIds=userHandler.GetUsers(req.CurrentLatitude, req.CurrentLongitude);
         }
         else{
-            //User user= userHandler.getUser(req.UserId);
-            // userIds=userHandler.getUsers(user.Latitude, user.Longitude);
+            User user= userHandler.getUser(req.UserId);
+             userIds=userHandler.GetUsers(user.Latitude1, user.Longitude1);
         }
         StringBuffer sb = new StringBuffer();
         //Set AssignedUsers property to the CSV of Assigned Users IDs
@@ -90,12 +91,16 @@ public class AddRequestServlet extends HttpServlet {
         }
         String users=sb.toString();
         req.AssignedUsers=users;
+        writer.print(sb.toString()+"g1"+users);
         //Add Request record in the database
         int reqId=requestHandler.AddRequest(req);
+        User user=userHandler.getUser(req.UserId);
         if(reqId>0){
             //!Send Push Notification to all these Users.
-            /*String value = "{\"data\": {\"message\":" + '"' + req.RequestMessage + '"' + ",\"userName\":" + '"' +
-                    requestModel.UserName + '"' + ",\"requestId\":" + requestModel.Id + ",\"Type\":"  + RequestType +
+
+            String value = "{\"data\": {\"message\":" + '"' + req.RequestMessage + '"' + ",\"userName\":" + '"' +
+                    user.UserName + '"' + ",\"requestId\":" + user.Id + ",\"Type\":"  + RequestType +
+
                     "},\"registration_ids\":[";
 
 
@@ -104,7 +109,7 @@ public class AddRequestServlet extends HttpServlet {
                 if(i.hasNext())
                     value += "\"" + item.RegistrationId + "\",";
                 else
-                    value += "\"" + item.RegistrationId + "\",";
+                    value += "\"" + item.RegistrationId + "\"";
 
             }
 
@@ -121,21 +126,32 @@ public class AddRequestServlet extends HttpServlet {
                     sb1.append(""+reqId);
                     String reqAssigned=sb1.toString();
                     item.RequestsAssigned=reqAssigned;
-                    userHandler.UpdateUser(item);
+                    int test=userHandler.UpdateUser(item);
+                    if(test==1)
+                        writer.print("Success");
+                    else
+                        writer.print("F");
                 }
                 else{
                     sb1.append(item.RequestsAssigned);
                     sb1.append(","+reqId);
                     String reqAssigned=sb1.toString();
                     item.RequestsAssigned=reqAssigned;
-                    userHandler.UpdateUser(item);
+                    int test=userHandler.UpdateUser(item);
+                    if(test==1)
+                        writer.print("Success");
+                    else
+                        writer.print("F");
                 }
 
 
-            }*/
+            }
 
         }
+        if(reqId>0)
         writer.print(""+reqId);
+        else
+            writer.print("Posted failed");
         //Return Request id
     }
 }

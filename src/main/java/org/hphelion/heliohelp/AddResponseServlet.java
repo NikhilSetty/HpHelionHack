@@ -41,6 +41,7 @@ public class AddResponseServlet extends HttpServlet {
     IRequestHandler requestHandler = new RequestHandler();
     IUserHandler userHandler = new UserHandler();
     GCM gcm=new GCM();
+    int ResponseType=3;
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuffer jb = new StringBuffer();
         String line = null;
@@ -81,17 +82,29 @@ public class AddResponseServlet extends HttpServlet {
         if(responseId>0) {
             //Retrieve the Request Object from database.
             Request req = requestHandler.RetrieveRequest(response1.RequestId);
-            //Retrieve the User Object of User who generated the Request.
-            User user = userHandler.getUser(req.UserId);
-            //!Send Push Notification to the User.
-            String value = "{\"data\": {\"ResponseUserId\":" + '"'
-                    + response1.UserId + '"' + ",\"ResponseMessage\":" + '"' + response1.Message + '"' + ",\"ResponseId\":" + response1.Id
-                    + ",\"ResponseUserName\":" + '"' + responseModel.UserName  + ",\"Type\":" + ResponseType + ",\"RequestId\":" + '"' + response1.RequestId + '"'
-                    + "},\"registration_ids\":[\"" + user.RegistrationId + "\"]}";
-            boolean successful=gcm.SendGCM(value);
+
+                //Retrieve the User Object of User who generated the Request.
+                User user = userHandler.getUser(req.UserId);
+                User resUser=userHandler.getUser(response1.UserId);
+                if(user!=null)
+                {
+                    //!Send Push Notification to the User.
+                    String value = "{\"data\": {\"ResponseUserId\":" + '"'
+                            + response1.UserId + '"' + ",\"ResponseMessage\":" + '"' + response1.Message + '"' + ",\"ResponseId\":" + response1.Id
+                            + ",\"ResponseUserName\":" + '"' + resUser.UserName  + ",\"Type\":" + ResponseType + ",\"RequestId\":" + '"' + response1.RequestId + '"'
+                            + "},\"registration_ids\":[\"" + user.RegistrationId + "\"]}";
+                    boolean successful=gcm.SendGCM(value);
+                }
+
+
+
+
         }
         //Return Response id
+        if(responseId>0)
         writer.print(""+responseId);
+        else
+            writer.print("Post failed");
 
     }
 }

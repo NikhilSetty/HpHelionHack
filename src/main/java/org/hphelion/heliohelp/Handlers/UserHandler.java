@@ -29,10 +29,10 @@ public class UserHandler implements IUserHandler {
         try{
             conn = dbTest.getConnection();
             statement=conn.createStatement();
-            String sql="SELECT * FROM Users WHERE Email="+email;
+            String sql="SELECT * FROM Users WHERE Email='"+email+"'";
             rs = statement.executeQuery(sql);
 
-                if(rs.first())
+                if(rs.next())
                 {
                     return true;
                 }
@@ -74,20 +74,19 @@ public class UserHandler implements IUserHandler {
         try{
             conn = dbTest.getConnection();
             statement=conn.createStatement();
-            String sql="INSERT INTO Users VALUES ("+user.UserName+","+user.EmailId+","+user.Password+","+user.Pincode1+","+user.Address1+","+user.Latitude1+"," +
-                    user.Longitude1+")";
-            rs = statement.executeQuery(sql);
-            boolean isInserted=rs.rowInserted();
-            if(isInserted)
-            {
-                String sql2="Select Id from Users orderby Id desc";
+            String sql="INSERT INTO Users VALUES ('"+user.UserName+"','"+user.EmailId+"','"+user.Password+"','"+user.PinCode1+"','"+user.Address1+"',"+user.Latitude1+"," +
+                    user.Longitude1+",null,null)";
+            System.out.print("Log" + sql);
+            statement.executeUpdate(sql);
+
+                String sql2="Select Id from Users order by Id desc";
                 rs=statement.executeQuery(sql2);
                 if(rs.next())
                 {
                     int id = rs.getInt("Id");
                     return id;
                 }
-            }
+
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -122,12 +121,12 @@ public class UserHandler implements IUserHandler {
     public int UpdateUserReg(int userId,String regId){
         Connection conn=null;
         Statement statement=null;
-        ResultSet rs=null;
+
         try {
             conn = dbTest.getConnection();
             statement = conn.createStatement();
-            String sql = "UPDATE Users SET RegistrationId="+regId+"where Id="+userId;
-            rs = statement.executeQuery(sql);
+            String sql = "UPDATE Users SET RegistrationId='"+regId+"'where Id="+userId;
+            statement.executeUpdate(sql);
             return 1;
         }
         catch (Exception e){
@@ -135,11 +134,7 @@ public class UserHandler implements IUserHandler {
         }
         finally{
             //finally block used to close resources
-            try{
-                if(rs!=null)
-                    rs.close();
-            }catch(SQLException se2){
-            }
+
             try{
                 if(statement!=null)
                     statement.close();
@@ -215,7 +210,7 @@ public class UserHandler implements IUserHandler {
                 user.Longitude1=rs.getFloat("Longitude");
                 user.Password=rs.getString("Password");
                 user.UserName=rs.getString("Name");
-                user.Pincode1=rs.getString("Pinocde");
+                user.PinCode1=rs.getString("Pinocde");
                 user.RegistrationId=rs.getString("RegistrationId");
                 user.RequestsAssigned=rs.getString("RequestsAssigned");
                 return user;
@@ -245,7 +240,7 @@ public class UserHandler implements IUserHandler {
     }
 
 
-    public List<User> GetUsers (Float latitude, Float longitude) throws SQLException {
+    public List<User> GetUsers (Float latitude, Float longitude)  {
         Connection conn=null;
         Statement statement=null;
         ResultSet rs=null;
@@ -258,11 +253,11 @@ public class UserHandler implements IUserHandler {
             while ( rs.next() ) {
                 User user = new User();
                 user.Id = rs.getInt("Id");
-                user.UserName = rs.getString("UserName");
+                user.UserName = rs.getString("Name");
                 user.Address1 = rs.getString("Address");
                 user.EmailId = rs.getString("Email");
                 user.Password = rs.getString("Password");
-                user.Pincode1 = rs.getString("Pincode");
+                user.PinCode1 = rs.getString("Pinocde");
                 user.RegistrationId = rs.getString("RegistrationId");
                 user.RequestsAssigned = rs.getString("RequestsAssigned");
                 user.Latitude1 = rs.getFloat("Latitude");
@@ -297,12 +292,12 @@ public class UserHandler implements IUserHandler {
     public int UpdateUser(User user){
         Connection conn=null;
         Statement statement=null;
-        ResultSet rs=null;
+
         try {
             conn = dbTest.getConnection();
             statement = conn.createStatement();
-            String sql = "UPDATE Users SET UserName="+user.UserName+",Address="+user.Address1+",Pincode="+user.Pincode1+",Email="+user.EmailId+",Latitude="+user.Latitude1+",Longituda="+user.Longitude1+",Password="+user.Password+",RequestsAssigned="+user.RequestsAssigned+",RegistrationId="+user.RegistrationId+" where Id="+user.Id;
-            rs = statement.executeQuery(sql);
+            String sql = "UPDATE Users SET Name='"+user.UserName+"',Address='"+user.Address1+"',Pinocde='"+user.PinCode1+"',Email='"+user.EmailId+"',Latitude="+user.Latitude1+",Longitude="+user.Longitude1+",Password='"+user.Password+"',RequestsAssigned='"+user.RequestsAssigned+"',RegistrationId='"+user.RegistrationId+"' where Id="+user.Id;
+            statement.executeUpdate(sql);
             return 1;
         }
         catch (Exception e){
@@ -310,11 +305,7 @@ public class UserHandler implements IUserHandler {
         }
         finally{
             //finally block used to close resources
-            try{
-                if(rs!=null)
-                    rs.close();
-            }catch(SQLException se2){
-            }
+
             try{
                 if(statement!=null)
                     statement.close();

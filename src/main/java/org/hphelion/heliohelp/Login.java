@@ -20,7 +20,7 @@ import java.io.PrintWriter;
 /**
  * Created by NJere on 4/23/2015.
  */
-public class UpdateRegId extends HttpServlet {
+public class Login extends HttpServlet {
     IUserHandler userHandler = new UserHandler();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuffer jb = new StringBuffer();
@@ -63,17 +63,16 @@ public class UpdateRegId extends HttpServlet {
         //System.out.println(employee);
 
         //Check if User Already exists in Database using email id.
-       // boolean emailExists=userHandler.EmailAlreadyExists(user.EmailId);
-       // if(!emailExists)
-      //  {
-            //Add User if it does not exist
-            userId =userHandler.UpdateUserReg(user.Id, user.RegistrationId);
+        // boolean emailExists=userHandler.EmailAlreadyExists(user.EmailId);
+        // if(!emailExists)
+        //  {
+        //Add User if it does not exist
+       // userId =userHandler.CheckUser(user.EmailId,user.Password);
+
         //}
 
-        if(userId>0)
-        writer.print("OK");
-        else
-            writer.print("ERROR");
+
+        writer.print(""+userId);
         //writer.print("INSERT INTO Users VALUES ("+user.UserName+","+user.EmailId+","+user.Password+","+user.Pincode1+","+user.Address1+","+user.Latitude1+","  +  user.Longitude1+")");
         //Return ID (existing or new
     }

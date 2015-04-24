@@ -8,7 +8,7 @@ public class User {
   public String UserName;
   public  String EmailId;
   public  String Password;
-  public  String Pincode1;
+  public  String PinCode1;
   public  String Address1;
   public  Float Latitude1;
   public  Float Longitude1;

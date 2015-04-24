@@ -29,19 +29,17 @@ public class RequestHandler implements IRequestHandler{
         try{
              conn = dbTest.getConnection();
              statement=conn.createStatement();
-            String sql="INSERT INTO Requests VALUES ("+request.RequestMessage+","+request.IsCurrent+","+request.CurrentLatitude+"," +
-                    request.CurrentLongitude+","+request.UserId+")";
-             rs = statement.executeQuery(sql);
-            boolean isInserted=rs.rowInserted();
-            if(isInserted)
-            {
-                String sql2="Select * from Requests orderby Id desc";
+            String sql="INSERT INTO Requests VALUES ('"+request.RequestMessage+"','"+request.IsCurrent+"',"+request.CurrentLatitude+"," +
+                    request.CurrentLongitude+","+request.UserId+",'"+request.TimeGenerated+"','"+request.AssignedUsers+"')";
+             statement.executeUpdate(sql);
+
+                String sql2="Select * from Requests order by Id desc";
                 rs=statement.executeQuery(sql2);
-                if(rs.first())
+                if(rs.next())
                 {
                     return rs.getInt("Id");
                 }
-            }
+
         }
         catch (SQLException ex)
         {

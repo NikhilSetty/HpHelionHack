@@ -81,11 +81,10 @@ public class AddUserServlet extends HttpServlet {
         //System.out.println(employee);
 
         //Check if User Already exists in Database using email id.
-        boolean emailExists=userHandler.EmailAlreadyExists(user.EmailId);
-        if(!emailExists)
-        {
+       // boolean emailExists=userHandler.EmailAlreadyExists(user.EmailId);
             //Add User if it does not exist
             userId =userHandler.AddUser(user);
+        if(userId>0){
             try{
                 AddUserToStore(user);
             }catch (Exception e){
@@ -94,12 +93,14 @@ public class AddUserServlet extends HttpServlet {
 
         }
 
-        else{
+      /*  else{
 
             writer.print("ERROR-Email Exists");
         }
 
             writer.print(""+userId);
+        else
+            writer.print("ERROR");*/
             //writer.print("INSERT INTO Users VALUES ("+user.UserName+","+user.EmailId+","+user.Password+","+user.Pincode1+","+user.Address1+","+user.Latitude1+","  +  user.Longitude1+")");
         //Return ID (existing or new
     }
