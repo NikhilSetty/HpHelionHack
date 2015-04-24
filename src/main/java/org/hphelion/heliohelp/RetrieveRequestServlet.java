@@ -36,30 +36,35 @@ public class RetrieveRequestServlet extends HttpServlet {
         //Read the UserId param from Query String.
         String userId=request.getParameter("UserId");
         PrintWriter writer =response.getWriter();
+        System.out.println(userId);
         //Iterate over AssignedRequests and get each request from Database.
         User user = userHandler.getUser(Integer.parseInt(userId));
         String[] reqIds= user.RequestsAssigned.split(",");
+        System.out.println(reqIds[0]);
         int count=reqIds.length,i=1;
+        System.out.println(count);
         List<Request> requests=new ArrayList<Request>();
 
-        while (i>count)
+        while (i<=count)
         {
             Request req=requestHandler.RetrieveRequest(Integer.parseInt(reqIds[i-1]));
             requests.add(req);
+            System.out.println(req.Id);
             i++;
         }
         //Append to the JSON Object.
         StringBuffer sb=new StringBuffer();
         sb.append("{\"UserId\":" + userId + ",\"Requests\":[");
+
         for(Iterator<Request> j = requests.iterator(); j.hasNext(); ) {
             Request item = j.next();
             User user1=userHandler.getUser(item.UserId);
             if(j.hasNext())
                 sb.append("{\"RequestUserName\":\"" + user1.UserName + "\",\"RequesteUserId\":" + user1.Id + ",\"RequestMessage\":\"" + item.RequestMessage + "\",\"RequestedTime\":\"" +
-                        item.TimeGenerated + "\",\"RequestId\":\"" + item.Id + "\",");
+                        item.TimeGenerated + "\",\"RequestId\":\"" + item.Id + "\"},");
             else
                 sb.append("{\"RequestUserName\":\"" + user1.UserName + "\",\"RequesteUserId\":" + user1.Id + ",\"RequestMessage\":\"" + item.RequestMessage + "\",\"RequestedTime\":\"" +
-                        item.TimeGenerated + "\",\"RequestId\":\"" + item.Id + "\"");
+                        item.TimeGenerated + "\",\"RequestId\":\"" + item.Id + "\"}");
 
         }
 

@@ -41,7 +41,7 @@ public class AddResponseServlet extends HttpServlet {
     IRequestHandler requestHandler = new RequestHandler();
     IUserHandler userHandler = new UserHandler();
     GCM gcm=new GCM();
-    int ResponseType=3;
+    int ResponseType=4;
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuffer jb = new StringBuffer();
         String line = null;
@@ -86,14 +86,17 @@ public class AddResponseServlet extends HttpServlet {
                 //Retrieve the User Object of User who generated the Request.
                 User user = userHandler.getUser(req.UserId);
                 User resUser=userHandler.getUser(response1.UserId);
+            System.out.print(user.RegistrationId);
                 if(user!=null)
                 {
                     //!Send Push Notification to the User.
                     String value = "{\"data\": {\"ResponseUserId\":" + '"'
                             + response1.UserId + '"' + ",\"ResponseMessage\":" + '"' + response1.Message + '"' + ",\"ResponseId\":" + response1.Id
-                            + ",\"ResponseUserName\":" + '"' + resUser.UserName  + ",\"Type\":" + ResponseType + ",\"RequestId\":" + '"' + response1.RequestId + '"'
+                            + ",\"ResponseUserName\":" + '"' + resUser.UserName  +'"'+ ",\"Type\":" + ResponseType + ",\"RequestId\":" + '"' + response1.RequestId + '"'
                             + "},\"registration_ids\":[\"" + user.RegistrationId + "\"]}";
                     boolean successful=gcm.SendGCM(value);
+                    System.out.print(value);
+                    System.out.print(successful);
                 }
 
 

@@ -49,10 +49,10 @@ public class RetrieveResponseServlet extends HttpServlet {
             User user1=userHandler.getUser(item.UserId);
             if(j.hasNext())
                 sb.append("{\"ResponseUserName\":\"" + user1.UserName + "\",\"ResponseUserId\":" + user1.Id + ",\"ResponseString\":\"" + item.Message + "\",\"ResponseTime\":\"" +
-                        item.TimeGenerated + "\",\"ResponseId\":\"" + item.Id + "\",");
+                        item.TimeGenerated + "\",\"ResponseId\":\"" + item.Id + "\"},");
             else
                 sb.append("{\"ResponseUserName\":\"" + user1.UserName + "\",\"ResponseUserId\":" + user1.Id + ",\"ResponseString\":\"" + item.Message + "\",\"ResponseTime\":\"" +
-                        item.TimeGenerated + "\",\"ResponseId\":\"" + item.Id + "\"");
+                        item.TimeGenerated + "\",\"ResponseId\":\"" + item.Id + "\"}");
 
         }
 

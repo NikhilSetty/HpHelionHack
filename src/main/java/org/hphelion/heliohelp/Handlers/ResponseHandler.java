@@ -68,7 +68,7 @@ public class ResponseHandler implements IResponseHandler {
         try {
             conn = dbTest.getConnection();
             statement = conn.createStatement();
-            String sql="Select * from Response where RequestId="+requestId;
+            String sql="Select * from Responses where RequestId="+requestId;
             rs = statement.executeQuery(sql);
             while(rs.next())
             {
