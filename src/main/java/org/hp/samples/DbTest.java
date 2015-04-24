@@ -1,12 +1,18 @@
 package org.hp.samples;
 
+import jdk.nashorn.internal.parser.JSONParser;
+import org.json.JSONObject;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.String;
 import java.sql.*;
+import java.text.ParseException;
 
 /**
  * Created by NiRavishankar on 4/22/2015.
@@ -83,5 +89,27 @@ public class DbTest extends HttpServlet{
                 out.println(se.getMessage());
             }//end finally try
         } //end try
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuffer jb = new StringBuffer();
+        String line = null;
+        try {
+            BufferedReader reader = request.getReader();
+            while ((line = reader.readLine()) != null)
+                jb.append(line);
+        } catch (Exception e) { /*report an error*/ }
+
+        try {
+            JSONObject jsonObject = new JSONObject(jb.toString());
+        } catch (Exception e) {
+            // crash and burn
+            throw new IOException("Error parsing JSON request string");
+        }
+        /*response.setContentType("text/plain");
+        response.setStatus(200);
+        PrintWriter writer = response.getWriter();
+        writer.println("I am adding user");
+        writer.close();*/
     }
 }

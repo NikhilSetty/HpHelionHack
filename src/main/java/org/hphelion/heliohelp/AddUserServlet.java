@@ -85,6 +85,7 @@ public class AddUserServlet extends HttpServlet {
             //Add User if it does not exist
             userId =userHandler.AddUser(user);
         if(userId>0){
+            writer.print(""+userId);
             try{
                 AddUserToStore(user);
             }catch (Exception e){
@@ -92,15 +93,10 @@ public class AddUserServlet extends HttpServlet {
             }
 
         }
-
-      /*  else{
-
-            writer.print("ERROR-Email Exists");
+        else{
+            writer.print("ERROR");
         }
 
-            writer.print(""+userId);
-        else
-            writer.print("ERROR");*/
             //writer.print("INSERT INTO Users VALUES ("+user.UserName+","+user.EmailId+","+user.Password+","+user.Pincode1+","+user.Address1+","+user.Latitude1+","  +  user.Longitude1+")");
         //Return ID (existing or new
     }

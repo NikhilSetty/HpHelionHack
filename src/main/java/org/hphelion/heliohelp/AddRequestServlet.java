@@ -52,21 +52,21 @@ public class AddRequestServlet extends HttpServlet {
         }
 
         //Map the JSON Object to Request Object.
-    Request req = null;
-    ObjectMapper mapper = new ObjectMapper();
-    try
-    {
-        req =  mapper.readValue(jsonObject.toString(), Request.class);
-    } catch (JsonGenerationException e)
-    {
-        e.printStackTrace();
-    } catch (JsonMappingException e)
-    {
-        e.printStackTrace();
-    } catch (IOException e)
-    {
-        e.printStackTrace();
-    }
+        Request req = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try
+        {
+            req =  mapper.readValue(jsonObject.toString(), Request.class);
+        } catch (JsonGenerationException e)
+        {
+            e.printStackTrace();
+        } catch (JsonMappingException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     // System.out.println(employee);
         List<User> userIds=null;
         //If isCurrent, get Users to assign the request to based on Lat and Long given in the request object
@@ -77,21 +77,24 @@ public class AddRequestServlet extends HttpServlet {
         }
         else{
             User user= userHandler.getUser(req.UserId);
+            System.out.println(user.Latitude1 + "," + user.Longitude1);
              userIds=userHandler.GetUsers(user.Latitude1, user.Longitude1);
         }
         StringBuffer sb = new StringBuffer();
+        System.out.println("Log : " + userIds.size());
         //Set AssignedUsers property to the CSV of Assigned Users IDs
         for(Iterator<User> i = userIds.iterator(); i.hasNext(); ) {
             int item = i.next().Id;
             if(i.hasNext())
-            sb.append(""+item+",");
+                sb.append(""+item+",");
             else
                 sb.append(""+item);
 
         }
         String users=sb.toString();
+        System.out.println(users);
         req.AssignedUsers=users;
-        writer.print(sb.toString()+"g1"+users);
+        System.out.println(sb.toString() + "g1" + users);
         //Add Request record in the database
         int reqId=requestHandler.AddRequest(req);
         User user=userHandler.getUser(req.UserId);
@@ -114,34 +117,45 @@ public class AddRequestServlet extends HttpServlet {
             }
 
             value +="]}";
+            System.out.println(value);
             boolean successful= gcm.SendGCM(value);
 
             //Update the RequestsAssigned field for all users to whom this request has been assigned and Update the Database.
             StringBuffer sb1 = new StringBuffer();
             for(Iterator<User> i = userIds.iterator(); i.hasNext(); ) {
                 User item = i.next();
-                sb1.append(item.RequestsAssigned);
+                sb1 = new StringBuffer();
+
                 if(item.RequestsAssigned==null)
                 {
+                    System.out.println("Requests assgined is null!! for user " + item.UserName);
+                    System.out.println(sb1);
                     sb1.append(""+reqId);
-                    String reqAssigned=sb1.toString();
+                    System.out.println("Sb1 after append : " + sb1 );
+                    String reqAssigned = sb1.toString();
+                    System.out.println("Req assigned : " + reqAssigned );
                     item.RequestsAssigned=reqAssigned;
                     int test=userHandler.UpdateUser(item);
                     if(test==1)
-                        writer.print("Success");
+                        System.out.println(" null : Success");
                     else
-                        writer.print("F");
+                        System.out.println("F");
                 }
                 else{
+                    System.out.println("Requests assgined is not null!! for user " + item.UserName);
+                    System.out.println(sb1);
                     sb1.append(item.RequestsAssigned);
-                    sb1.append(","+reqId);
+                    System.out.println("Sb1 after request assigned append : " + sb1);
+                    sb1.append("," + reqId);
+                    System.out.println("sb1 append: " + sb1 );
                     String reqAssigned=sb1.toString();
+                    System.out.println("Req assigned : " + reqAssigned );
                     item.RequestsAssigned=reqAssigned;
                     int test=userHandler.UpdateUser(item);
                     if(test==1)
-                        writer.print("Success");
+                        System.out.println("Success");
                     else
-                        writer.print("F");
+                        System.out.println("F");
                 }
 
 
@@ -149,7 +163,7 @@ public class AddRequestServlet extends HttpServlet {
 
         }
         if(reqId>0)
-        writer.print(""+reqId);
+            writer.print(""+reqId);
         else
             writer.print("Posted failed");
         //Return Request id

@@ -297,6 +297,7 @@ public class UserHandler implements IUserHandler {
             conn = dbTest.getConnection();
             statement = conn.createStatement();
             String sql = "UPDATE Users SET Name='"+user.UserName+"',Address='"+user.Address1+"',Pinocde='"+user.PinCode1+"',Email='"+user.EmailId+"',Latitude="+user.Latitude1+",Longitude="+user.Longitude1+",Password='"+user.Password+"',RequestsAssigned='"+user.RequestsAssigned+"',RegistrationId='"+user.RegistrationId+"' where Id="+user.Id;
+            System.out.println(sql);
             statement.executeUpdate(sql);
             return 1;
         }
